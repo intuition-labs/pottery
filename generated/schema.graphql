@@ -1,0 +1,654 @@
+type Query {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  userIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): UserConnection
+  subjectPKPIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): SubjectPKPConnection
+  entryIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): EntryConnection
+  listIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): ListConnection
+  permissionedListIndex(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): PermissionedListConnection
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type CeramicAccount implements Node {
+  """Globally unique identifier of the account (DID string)"""
+  id: ID!
+
+  """
+  Whether the Ceramic instance is currently authenticated with this account or not
+  """
+  isViewer: Boolean!
+  user: User
+  subjectPkpList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): SubjectPKPConnection
+  entryList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): EntryConnection
+  listList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): ListConnection
+  permissionedListList(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): PermissionedListConnection
+}
+
+type User implements Node {
+  id: ID!
+  url: String
+  name: String!
+  emoji: String
+  hello: String
+  image: UserImageSources
+  description: String
+}
+
+type UserImageSources {
+  original: UserImageMetadata!
+  alternatives: [UserImageMetadata]
+}
+
+type UserImageMetadata {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+"""A connection to a list of items."""
+type SubjectPKPConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [SubjectPKPEdge]
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""An edge in a connection."""
+type SubjectPKPEdge {
+  """The item at the end of the edge"""
+  node: SubjectPKP
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type SubjectPKP implements Node {
+  id: ID!
+  pkpId: String!
+  subject: String!
+}
+
+"""A connection to a list of items."""
+type EntryConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [EntryEdge]
+}
+
+"""An edge in a connection."""
+type EntryEdge {
+  """The item at the end of the edge"""
+  node: Entry
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Entry implements Node {
+  id: ID!
+  url: String
+  name: String!
+  image: EntryImageSources
+  description: String
+}
+
+type EntryImageSources {
+  original: EntryImageMetadata!
+  alternatives: [EntryImageMetadata]
+}
+
+type EntryImageMetadata {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+"""A connection to a list of items."""
+type ListConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ListEdge]
+}
+
+"""An edge in a connection."""
+type ListEdge {
+  """The item at the end of the edge"""
+  node: List
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type List implements Node {
+  id: ID!
+  url: String
+  name: String!
+  image: ListImageSources
+  description: String
+}
+
+type ListImageSources {
+  original: ListImageMetadata!
+  alternatives: [ListImageMetadata]
+}
+
+type ListImageMetadata {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+"""A connection to a list of items."""
+type PermissionedListConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PermissionedListEdge]
+}
+
+"""An edge in a connection."""
+type PermissionedListEdge {
+  """The item at the end of the edge"""
+  node: PermissionedList
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type PermissionedList implements Node {
+  id: ID!
+  name: String!
+  users: [String]
+  listId: CeramicStreamID!
+  list: List
+}
+
+"""A Ceramic Stream ID"""
+scalar CeramicStreamID
+
+"""A connection to a list of items."""
+type UserConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [UserEdge]
+}
+
+"""An edge in a connection."""
+type UserEdge {
+  """The item at the end of the edge"""
+  node: User
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): CreateUserPayload
+  updateUser(input: UpdateUserInput!): UpdateUserPayload
+  createSubjectPKP(input: CreateSubjectPKPInput!): CreateSubjectPKPPayload
+  updateSubjectPKP(input: UpdateSubjectPKPInput!): UpdateSubjectPKPPayload
+  createEntry(input: CreateEntryInput!): CreateEntryPayload
+  updateEntry(input: UpdateEntryInput!): UpdateEntryPayload
+  createList(input: CreateListInput!): CreateListPayload
+  updateList(input: UpdateListInput!): UpdateListPayload
+  createPermissionedList(input: CreatePermissionedListInput!): CreatePermissionedListPayload
+  updatePermissionedList(input: UpdatePermissionedListInput!): UpdatePermissionedListPayload
+}
+
+type CreateUserPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: User!
+  clientMutationId: String
+}
+
+input CreateUserInput {
+  content: UserInput!
+  clientMutationId: String
+}
+
+input UserInput {
+  url: String
+  name: String!
+  emoji: String
+  hello: String
+  image: UserImageSourcesInput
+  description: String
+}
+
+input UserImageSourcesInput {
+  original: UserImageMetadataInput!
+  alternatives: [UserImageMetadataInput]
+}
+
+input UserImageMetadataInput {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+type UpdateUserPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: User!
+  clientMutationId: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  content: PartialUserInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialUserInput {
+  url: String
+  name: String
+  emoji: String
+  hello: String
+  image: UserImageSourcesInput
+  description: String
+}
+
+input UpdateOptionsInput {
+  """
+  Fully replace the document contents instead of performing a shallow merge
+  """
+  replace: Boolean = false
+
+  """Only perform mutation if the document matches the provided version"""
+  version: CeramicCommitID
+}
+
+"""A Ceramic Commit ID"""
+scalar CeramicCommitID
+
+type CreateSubjectPKPPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SubjectPKP!
+  clientMutationId: String
+}
+
+input CreateSubjectPKPInput {
+  content: SubjectPKPInput!
+  clientMutationId: String
+}
+
+input SubjectPKPInput {
+  pkpId: String!
+  subject: String!
+}
+
+type UpdateSubjectPKPPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: SubjectPKP!
+  clientMutationId: String
+}
+
+input UpdateSubjectPKPInput {
+  id: ID!
+  content: PartialSubjectPKPInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialSubjectPKPInput {
+  pkpId: String
+  subject: String
+}
+
+type CreateEntryPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Entry!
+  clientMutationId: String
+}
+
+input CreateEntryInput {
+  content: EntryInput!
+  clientMutationId: String
+}
+
+input EntryInput {
+  url: String
+  name: String!
+  image: EntryImageSourcesInput
+  description: String
+}
+
+input EntryImageSourcesInput {
+  original: EntryImageMetadataInput!
+  alternatives: [EntryImageMetadataInput]
+}
+
+input EntryImageMetadataInput {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+type UpdateEntryPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: Entry!
+  clientMutationId: String
+}
+
+input UpdateEntryInput {
+  id: ID!
+  content: PartialEntryInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialEntryInput {
+  url: String
+  name: String
+  image: EntryImageSourcesInput
+  description: String
+}
+
+type CreateListPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: List!
+  clientMutationId: String
+}
+
+input CreateListInput {
+  content: ListInput!
+  clientMutationId: String
+}
+
+input ListInput {
+  url: String
+  name: String!
+  image: ListImageSourcesInput
+  description: String
+}
+
+input ListImageSourcesInput {
+  original: ListImageMetadataInput!
+  alternatives: [ListImageMetadataInput]
+}
+
+input ListImageMetadataInput {
+  src: String!
+  size: Int
+  width: Int!
+  height: Int!
+  mimeType: String!
+}
+
+type UpdateListPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: List!
+  clientMutationId: String
+}
+
+input UpdateListInput {
+  id: ID!
+  content: PartialListInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialListInput {
+  url: String
+  name: String
+  image: ListImageSourcesInput
+  description: String
+}
+
+type CreatePermissionedListPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PermissionedList!
+  clientMutationId: String
+}
+
+input CreatePermissionedListInput {
+  content: PermissionedListInput!
+  clientMutationId: String
+}
+
+input PermissionedListInput {
+  name: String!
+  users: [String]
+  listId: CeramicStreamID!
+}
+
+type UpdatePermissionedListPayload {
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+
+  """Account currently authenticated on the Ceramic instance, if set"""
+  viewer: CeramicAccount
+  document: PermissionedList!
+  clientMutationId: String
+}
+
+input UpdatePermissionedListInput {
+  id: ID!
+  content: PartialPermissionedListInput!
+  options: UpdateOptionsInput
+  clientMutationId: String
+}
+
+input PartialPermissionedListInput {
+  name: String
+  users: [String]
+  listId: CeramicStreamID
+}

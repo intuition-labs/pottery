@@ -1,0 +1,47 @@
+schema: generated/schema.graphql
+documents: ['generated']
+config:
+  namingConvention: keep
+generates:
+  './generated/types.ts':
+    plugins:
+      - add:
+          content: |
+            // THIS FILE IS GENERATED, DO NOT EDIT!
+            import { DID } from 'dids'
+      - 'typescript'
+      - 'typescript-operations'
+    config:
+      scalars:
+        CeramicCommitID: string
+        CeramicStreamID: string
+        Date: string
+        DateTime: string
+        DID: any
+      skipTypename: true
+      strictScalars: true
+      declarationKind: interface
+  './generated/validation.ts':
+    plugins:
+      - add:
+          content: '// THIS FILE IS GENERATED, DO NOT EDIT!'
+      - 'typescript-validation-schema'
+    config:
+      importFrom: ./types.js
+      schema: zod
+      scalarSchemas:
+        Date: z.string().datetime()
+        DateTime: z.string().datetime()
+      directives:
+        string:
+          minLength: min
+          maxLength: max
+  './generated/index.ts':
+    plugins:
+      - add:
+          content: |
+            export * from './composites/index.js'
+            export * from './types.js'
+            export * from './validation.js'
+            export * from './queries.js'
+            export * from './client/index.js'
